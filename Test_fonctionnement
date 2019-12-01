@@ -1,0 +1,81 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 27 12:11:01 2019
+
+@author: julie
+"""
+
+# package importation
+import numpy as np
+
+# data importation
+
+# function creation for read fasta file : readFastaFile2
+# PARAMETERS : the filename (the file is in fasta format)
+# RETURNS : a list with all the protein sequences
+
+def readFastaFile2(filename) :
+    
+    # opening the file whose name is filename
+    fd = open(filename,'r')
+    txt = fd.read()
+    fd.close()
+    
+    # txt contains all the text of the file. 
+    # fisrt, I want to seperate the proteins, the symbol that starts a new protein is '>'
+    seqs = txt.split('>')[1:]
+    listSeq = []
+    
+    for seq in seqs :
+        lines = seq.split('\n')[1:]       
+        s = ""  
+        for line in lines :
+            s = s + line
+        listSeq.append(s)
+    
+    return(listSeq)
+
+
+fasta = readFastaFile2("C:/Users/julie/Documents/COURS/Cours M2 S1/ICE/Proteome/human-proteome.fasta")
+
+# function creation for read word file : readWordFile2
+
+def readWordFile2(filename) :
+    
+    # opening the file whose name is filename
+    fd = open(filename,'r')
+    txt = fd.read()
+    fd.close()
+    
+    # txt contains all the text of the file. 
+    # fisrt, I want to seperate the proteins, the symbol that starts a new protein is '>'
+    seqs = txt.split('\n')[1:]
+    
+    return(seqs)
+
+
+word = readWordFile2("C:/Users/julie/Documents/COURS/Cours M2 S1/ICE/Proteome/english-words.txt")
+
+#test sur petit morceau
+
+word = word[0:2]
+fasta = fasta[0:2]
+fasta[1] = 'HABILITY'
+
+res = np.zeros([len(fasta),2]) 
+
+for j in range(0,(len(fasta))) :
+    print(j,"j")
+    res[j,0]=len(fasta[j])
+    for i in range(0,(len(word))) :
+        print(i,"i")
+        l_word = len(word[i])
+        print(l_word,"l_word")
+        print(len(fasta[j])-len(word[i]))
+        for k in range (0,(len(fasta[j])-len(word[i])+1)) :
+            print(k,"k")
+            print(fasta[j][k:(k+l_word)],word[i].upper())
+            print(fasta[j][k:(k+l_word)] == word[i].upper())
+            if (fasta[j][k:(k+l_word)] == word[i].upper()) :
+                res[j,1] += 1
+                    
